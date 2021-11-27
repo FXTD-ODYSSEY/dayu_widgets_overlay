@@ -12,12 +12,14 @@ from collections import namedtuple
 
 from Qt import QtCore, QtWidgets, QtGui
 
+
 class MOverlay(QtWidgets.QWidget):
-    
+
     resized = QtCore.Signal(QtCore.QEvent)
     painted = QtCore.Signal(QtCore.QEvent)
 
-    DIRECTION = namedtuple("Direction", "E S W N")(0, 1, 2, 3)
+    DIRECTIONS = u"ESWN"
+    DIRECTION = namedtuple("Direction", " ".join(DIRECTIONS))(0, 1, 2, 3)
     STRETCH = namedtuple("Stretch", "NoStretch Vertical Horizontal Center Auto")(
         0, 1, 2, 3, 4
     )
@@ -61,9 +63,11 @@ class MOverlay(QtWidgets.QWidget):
 
         # NOTE 根据方向获取依附组件
         direction = self.property("direction")
-        direction = direction.upper() if isinstance(direction, str) else ""
-        direction = self.DIRECTION._asdict().get(direction)
-        if not direction is None and self.direction == self.DIRECTION.E:
+        msg = "direction must be `%s` character" % " ".join(self.DIRECTIONS)
+        assert direction in self.DIRECTIONS, msg
+        direction = direction.upper()
+        direction = self.DIRECTION._asdict()[direction]
+        if direction is not None:
             self.set_direction(direction)
 
         layout = self.parentWidget().layout()
@@ -163,6 +167,4 @@ class MOverlay(QtWidgets.QWidget):
 
     def set_direction(self, direction):
         self.direction = direction
-        
-        
-        
+
