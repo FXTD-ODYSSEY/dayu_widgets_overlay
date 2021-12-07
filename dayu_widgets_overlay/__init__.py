@@ -1,3 +1,4 @@
 from .overlay import MOverlay
 
-__all__ = ['MOverlay']
+
+__all__ = ["MOverlay"]

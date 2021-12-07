@@ -7,10 +7,14 @@
 ###################################################################
 """MOverlay"""
 
-from functools import partial
+# Import built-in modules
 from collections import namedtuple
+from functools import partial
 
-from Qt import QtCore, QtWidgets, QtGui
+# Import third-party modules
+from Qt import QtCore
+from Qt import QtGui
+from Qt import QtWidgets
 
 
 class MOverlay(QtWidgets.QWidget):
@@ -18,11 +22,13 @@ class MOverlay(QtWidgets.QWidget):
     resized = QtCore.Signal(QtCore.QEvent)
     painted = QtCore.Signal(QtCore.QEvent)
 
-    DIRECTIONS = u"ESWN"
-    DIRECTION = namedtuple("Direction", " ".join(DIRECTIONS))(0, 1, 2, 3)
-    STRETCH = namedtuple("Stretch", "NoStretch Vertical Horizontal Center Auto")(
-        0, 1, 2, 3, 4
-    )
+    # fmt: off
+    # NOTES: py2 compat (qt property get unicode string)
+    DIRECTIONS = u"E S W N"
+    STRETCHES = u"NoStretch Vertical Horizontal Center Auto"
+    # fmt: on
+    DIRECTION = namedtuple("Direction", DIRECTIONS)(0, 1, 2, 3)
+    STRETCH = namedtuple("Stretch", STRETCHES)(0, 1, 2, 3, 4)
 
     def __init__(self, parent=None):
         super(MOverlay, self).__init__(parent=parent)
@@ -63,10 +69,10 @@ class MOverlay(QtWidgets.QWidget):
 
         # NOTE 根据方向获取依附组件
         direction = self.property("direction")
-        msg = "direction must be `%s` character" % " ".join(self.DIRECTIONS)
-        assert direction in self.DIRECTIONS, msg
         direction = direction.upper()
-        direction = self.DIRECTION._asdict()[direction]
+        direction = self.DIRECTION._asdict().get(direction)
+        msg = "direction must be `%s` character" % self.DIRECTIONS
+        assert direction != None, msg
         if direction is not None:
             self.set_direction(direction)
 
@@ -167,4 +173,3 @@ class MOverlay(QtWidgets.QWidget):
 
     def set_direction(self, direction):
         self.direction = direction
-
