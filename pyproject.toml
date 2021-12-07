@@ -14,7 +14,7 @@ keywords = ["PySide", "PyQt", "UI", "PySide2", "PyQt5", "dayu_widgets"]
 license = "MIT"
 name = "dayu_widgets_overlay"
 readme = "README.md"
-version = "0.1.0"
+version = "0.1.1"
 
 [tool.poetry.dependencies]
 "Qt.py" = "^1.3.6"
@@ -38,10 +38,10 @@ requires = ["poetry-core>=1.0.0"]
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "v$version"
-version = "0.1.0"
+version = "0.1.1"
 version_files = [
   "pyproject.toml:version",
-  "dayu_widgets/__version__.py",
+  "dayu_widgets_overlay/__version__.py",
 ]
 
 [tool.black]
