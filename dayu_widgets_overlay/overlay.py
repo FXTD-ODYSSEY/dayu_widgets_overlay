@@ -164,8 +164,10 @@ class MOverlay(QtWidgets.QWidget):
     def _update_mask(self):
         # NOTE https://stackoverflow.com/q/27855137
         reg = QtGui.QRegion(self.frameGeometry())
-        reg -= QtGui.QRegion(self.geometry())
-        reg += self.childrenRegion()
+        child_region = self.childrenRegion()
+        if child_region:
+            reg -= QtGui.QRegion(self.geometry())
+            reg += child_region
         self.setMask(reg)
 
     def set_stretch(self, stretch):
